@@ -32,6 +32,7 @@ media
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
+RB tasks.txt
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
