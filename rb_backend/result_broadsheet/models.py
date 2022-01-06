@@ -46,17 +46,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Department():
     pass
 
-class  Student():
+class  Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     mat_no = models.CharField(max_length=20, blank=False)
     level = models.CharField(max_length=6, blank=False)
     reg_date = models.DateTimeField(auto_now_add=True)
 
-class CourseAdviser():
-    pass
+    class Meta:
+        verbose_name_plural = 'Student'
 
-class Lecturer():
-    pass
+class CourseAdviser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = 'CourseAdviser'
+
+class Lecturer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = 'Lecturer'
 
 class Course():
     pass
