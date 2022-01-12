@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'result_broadsheet.User'
+AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'result_broadsheet',
+    'accounts',
 ]
 
 MIDDLEWARE = [

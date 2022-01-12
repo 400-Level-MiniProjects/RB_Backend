@@ -18,6 +18,7 @@ from django.urls import path, include
 import result_broadsheet #import urls
 urlpatterns = [
     path('', include('result_broadsheet.urls')),
+    path('', include('accounts.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
 
