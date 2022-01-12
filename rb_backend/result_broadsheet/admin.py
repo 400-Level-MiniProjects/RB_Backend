@@ -3,22 +3,19 @@ from .models import *
 
 # Register AdminModels here
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'date_joined',)
-    search_fields = ('email', 'first_name', 'last_name',)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('department_name',)
+    search_fields = ('department_name', 'courses')
 
-class StudentAdmin(admin.ModelAdmin):
-    list_display = ('mat_no', 'level',)
-    search_fields = ('mat_no',)
+class FacultyAdmin(admin.ModelAdmin):
+    list_display = ('faculty_name',)
+    search_fields = ('faculty_name',)
 
 # Register your models here.
-admin.site.register(User, UserAdmin)
-admin.site.register(Student, StudentAdmin)
-admin.site.register(CourseAdviser)
-admin.site.register(Lecturer)
+
 admin.site.register(Course)
 admin.site.register(Grade)
 admin.site.register(Result)
-admin.site.register(Faculty)
-admin.site.register(Department)
+admin.site.register(Faculty, FacultyAdmin)
+admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Semester)
