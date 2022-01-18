@@ -1,6 +1,7 @@
 from tkinter.messagebox import NO
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from knox.models import AuthToken
@@ -8,10 +9,12 @@ from .serializers import *
 
 # Create your views here.
 
-class RegisterUser(APIView):
-    
-    def post(self, request, format=None):
-        serializer = RegisterUserSerializer(data=request.data)
+class RegisterUser(GenericAPIView):
+    serializer_class = RegisterUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
         if serializer.is_valid():
             user = serializer.save()
             return Response(
