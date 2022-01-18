@@ -1,7 +1,6 @@
-from dataclasses import field
-import imp
 from rest_framework import serializers
 from .models import *
+from django.contrib.auth import authenticate
 
 class UserSerializers(serializers.ModelSerializer):
     class Meta:
