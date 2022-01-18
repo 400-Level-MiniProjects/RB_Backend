@@ -1,10 +1,15 @@
-from tkinter.messagebox import NO
 from django.shortcuts import render
-from rest_framework.views import APIView
+from django.contrib.auth import login
+
+from rest_framework import permissions
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+
 from knox.models import AuthToken
+from knox.views import LoginView as KLoginView
+
 from .serializers import *
 
 # Create your views here.
@@ -24,3 +29,16 @@ class RegisterUser(GenericAPIView):
                 }
             )
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class LoginUser(KLoginView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            login(request, user)
+            return super(LoginUser, self).post(request, format=None)
+        else:
+            return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
