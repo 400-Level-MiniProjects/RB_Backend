@@ -14,11 +14,11 @@ class StudentAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.register(Student, StudentAdmin)
-admin.site.register(CourseAdviser)
+# admin.site.register(CourseAdviser)
 admin.site.register(Lecturer)
 admin.site.register(Course)
 admin.site.register(Grade)
 admin.site.register(Result)
 admin.site.register(Faculty)
 admin.site.register(Department)
-admin.site.register(Semester)
+# admin.site.register(Semester)
