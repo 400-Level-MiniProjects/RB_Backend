@@ -6,17 +6,25 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import *
 # Create your views here.
+
+REQ_ERRORS = {
+    """[A Dictionary of Request-Response Errors]"""
+
+    "INVALID": {'Error': 'invalid request!!!'},
+    "DATA_EXISTS": {'Error': 'Data Exists!'},
+    # "DATA_EXISTS": "{'Error': 'invalid request!!!'}",
+}
 class FacultyData(APIView):
-    def get(self, request, pk=None):
+    def get(self, request, f_code=None):
         faculty_data = {}
 
-        if pk is not None:
+        if f_code is not None:
             """[This gets the faculty detail if 'pk' is present in the request]
 
             Returns:
                 [API Response]: [The response carries the single Faculty response to the view]
             """
-            facultyOBJ = Faculty.objects.get(pk=pk)
+            facultyOBJ = Faculty.objects.get(faculty_code=f_code)
             faculty_ = serializeFaculty(facultyOBJ)
             faculty_data['data'] = "Faculty Detail"
             faculty_data['details'] = faculty_
@@ -33,43 +41,43 @@ class FacultyData(APIView):
         faculty_data['details'] = faculties
         return Response(faculty_data)
 
-    def post(self, request, pk=None):
-        if pk is not None:
-            facultyOBJ = Faculty.objects.get(pk=pk)
+    def post(self, request, f_code=None):
+        if f_code is not None:
+            facultyOBJ = Faculty.objects.get(faculty_code=f_code)
             serializer = FacultySerializer(facultyOBJ, data=request.data)
 
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
             else:
-                return Response({"Error": "invalid request!!!"})
+                return Response(REQ_ERRORS['INVALID'])
         else:
-            # faucltyOBJ = Faculty.objects.
+            # facultyOBJ = Faculty.objects.
             serializer = FacultySerializer(data=request.data)
             if serializer.is_valid():
                 try :
                     facultyOBJ = Faculty.objects.get(faculty_code = request.data['faculty_code'])
                     if facultyOBJ:
-                        return Response({"Error": "Data Exists!"})
+                        return Response(REQ_ERRORS['DATA_EXISTS'])
                 except Faculty.DoesNotExist:
                     serializer.save()
                     return Response(serializer.data)
             else:
-                return Response({"Error": "invalid request!!!"})
+                return Response(REQ_ERRORS['INVALID'])
 
-    def delete(self, request, pk=None):
-        if pk is not None:
-            facultyOBJ = Faculty.objects.get(pk=pk)
+    def delete(self, request, f_code=None):
+        if f_code is not None:
+            facultyOBJ = Faculty.objects.get(faculty_code=f_code)
             serializer = FacultySerializer(facultyOBJ, data=request.data)
 
             if serializer.is_valid():
                 serializer.delete()
                 return Response(serializer.data)
             else:
-                return Response({"Error": "invalid request!!!"})
+                return Response(REQ_ERRORS['INVALID'])
 
         else:
-                return Response({"Error": "invalid request!!!"})
+                return Response(REQ_ERRORS['INVALID'])
 
 class DepartmentData(APIView):
     def get(self, request, d_code=None):
@@ -79,9 +87,9 @@ class DepartmentData(APIView):
             Returns:
                 Response: [returns the detail of the department]
             """
-        
+
             d_code = str(d_code.upper())
-            deptOBJ = Department.objects.get(department_code=d_code)
+            deptOBJ = Department.objects.get(dept_code=d_code)
             department_ = serializeDepartment(deptOBJ)
 
             return Response(department_)
@@ -106,7 +114,7 @@ class DepartmentData(APIView):
 
                 for department in departments:
                     if department['faculty']== faculty['id']:
-                        dept['departments'].append(str(department['department_name']+" ("+department['department_code']+")"))
+                        dept['departments'].append(str(department['dept_name']+" ("+department['dept_code']+")"))
                 dept_data.append(dept)
 
             depts_dict['dept_data']=dept_data
@@ -127,3 +135,8 @@ class CourseData(APIView):
     def post(self, request, pk=None):
         pass
 
+class ResultData(APIView):
+    def get(self, request):
+        resOBJ = Result.objects.all()
+        results = serializeResult(resOBJ, many=True)
+        return Response(results)

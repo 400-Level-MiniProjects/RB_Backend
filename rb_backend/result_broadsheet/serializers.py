@@ -28,7 +28,6 @@ def serializeDepartment(departmentOBJ, many=False):
         serializer = DepartmentSerializer(departmentOBJ)
         return serializer.data
 
-
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Course
@@ -46,14 +45,21 @@ class ResultSerializer(serializers.ModelSerializer):
         model = models.Result
         fields = "__all__"
 
+def serializeResult(resOBJ, many=False):
+    if many is not False:
+        serializer = ResultSerializer(resOBJ, many=True)
+        return serializer.data
+    else:
+        serializer = ResultSerializer(resOBJ)
+        return serializer.data
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Student
         fields = "__all__"
 
-class LectureSerializer(serializers.ModelSerializer):
+class StaffSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Lecturer
+        model = models.Staff
         fields = "__all__"
 
 class GradeSerializer(serializers.ModelSerializer):
